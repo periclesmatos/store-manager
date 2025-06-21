@@ -42,6 +42,12 @@ public class ProdutoController {
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
+    @GetMapping("/busca")
+    public ResponseEntity<Page<ProdutoResponse>> buscarProdutosPorNome(@RequestParam(required = false) String nome, Pageable pageable) {
+        var page = produtoService.buscarProdutosPorNome(nome, pageable);
+        return ResponseEntity.ok(page);
+    }
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoUpdateDTO produtoUpdate) {
@@ -69,6 +75,5 @@ public class ProdutoController {
         produtoService.deletarProduto(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

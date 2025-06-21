@@ -29,6 +29,13 @@ public class ProdutoService {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
 
+    public Page<ProdutoResponse> buscarProdutosPorNome(String nome, Pageable pageable) {
+        if (nome != null && !nome.isBlank()) {
+            return produtoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome, pageable).map(ProdutoResponse::new);
+        }
+        return produtoRepository.findAllByAtivoTrue(pageable).map(ProdutoResponse::new);
+    }
+
     public Produto atualizarProduto(Long id, ProdutoUpdateDTO produtoUpdate) {
         var produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
         produto.atualizarProduto(produtoUpdate);
