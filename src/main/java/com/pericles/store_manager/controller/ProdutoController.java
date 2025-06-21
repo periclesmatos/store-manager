@@ -1,7 +1,6 @@
 package com.pericles.store_manager.controller;
 
-import com.pericles.store_manager.domain.Produto;
-import com.pericles.store_manager.dto.*;
+import com.pericles.store_manager.dto.produto.*;
 import com.pericles.store_manager.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,12 @@ public class ProdutoController {
     }
 
     @GetMapping()
-    @Transactional
     public ResponseEntity<Page<ProdutoResponse>> listarProdutosAtivos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var page = produtoService.listarProdutosAtivos(pageable);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    @Transactional
     public ResponseEntity<ProdutoResponse> buscarProduto(@PathVariable Long id) {
         var produto = produtoService.buscarProduto(id);
         return ResponseEntity.ok(new ProdutoResponse(produto));

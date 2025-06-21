@@ -1,7 +1,7 @@
 package com.pericles.store_manager.service;
 
 import com.pericles.store_manager.domain.Produto;
-import com.pericles.store_manager.dto.*;
+import com.pericles.store_manager.dto.produto.*;
 import com.pericles.store_manager.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

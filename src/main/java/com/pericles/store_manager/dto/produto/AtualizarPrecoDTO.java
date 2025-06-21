@@ -1,4 +1,4 @@
-package com.pericles.store_manager.dto;
+package com.pericles.store_manager.dto.produto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

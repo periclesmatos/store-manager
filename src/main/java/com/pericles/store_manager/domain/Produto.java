@@ -1,9 +1,8 @@
 package com.pericles.store_manager.domain;
 
-import com.pericles.store_manager.dto.ProdutoRequest;
-import com.pericles.store_manager.dto.ProdutoUpdateDTO;
+import com.pericles.store_manager.dto.produto.ProdutoRequest;
+import com.pericles.store_manager.dto.produto.ProdutoUpdateDTO;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -11,7 +10,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
