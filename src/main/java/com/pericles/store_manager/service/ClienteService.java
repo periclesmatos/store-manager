@@ -3,6 +3,7 @@ package com.pericles.store_manager.service;
 import com.pericles.store_manager.domain.Cliente;
 import com.pericles.store_manager.dto.cliente.ClienteRequest;
 import com.pericles.store_manager.dto.cliente.ClienteResponse;
+import com.pericles.store_manager.dto.cliente.ClienteUpdateDTO;
 import com.pericles.store_manager.repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -35,9 +36,9 @@ public class ClienteService {
         return clienteRepository.buscarClientesPorTermo(termo, pageable).map(ClienteResponse::new);
     }
 
-    public Cliente atualizarCliente(Long id, @Valid ClienteRequest clienteRequest) {
+    public Cliente atualizarCliente(Long id, @Valid ClienteUpdateDTO clienteUpdate) {
         var cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
-        cliente.atualizarCliente(clienteRequest);
+        cliente.atualizarCliente(clienteUpdate);
         return cliente;
     }
 

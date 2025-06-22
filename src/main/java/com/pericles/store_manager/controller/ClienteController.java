@@ -2,6 +2,7 @@ package com.pericles.store_manager.controller;
 
 import com.pericles.store_manager.dto.cliente.ClienteRequest;
 import com.pericles.store_manager.dto.cliente.ClienteResponse;
+import com.pericles.store_manager.dto.cliente.ClienteUpdateDTO;
 import com.pericles.store_manager.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
-        var cliente = clienteService.atualizarCliente(id, clienteRequest);
+    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteUpdateDTO clienteUpdate) {
+        var cliente = clienteService.atualizarCliente(id, clienteUpdate);
         return ResponseEntity.ok(new ClienteResponse(cliente));
     }
 
