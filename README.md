@@ -118,6 +118,7 @@ http://localhost:8080/swagger-ui.html
 | `POST`   | `/clientes`      | Cadastra um novo cliente     |
 | `GET`    | `/clientes`      | Lista todos os clientes      |
 | `GET`    | `/clientes/{id}` | Busca cliente por ID         |
+| `GET`    | `/clientes/busca?termo=x`| Filtra clientes por termo no nome, e-mail ou CPF |
 | `PUT`    | `/clientes/{id}` | Atualiza os dados do cliente |
 | `DELETE` | `/clientes/{id}` | Remove um cliente            |
 
