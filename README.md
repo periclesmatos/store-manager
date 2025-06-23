@@ -2,7 +2,7 @@
 
 API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, clientes e, futuramente, pedidos. Este projeto é a base para um sistema completo de gestão de vendas, focado em boas práticas de arquitetura, organização de código e modelagem próxima da realidade do mercado.
 
----
+
 
 ## 🚀 Tecnologias e ferramentas
 
@@ -16,7 +16,7 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 - Maven
 - Lombok
 
----
+
 
 ## 📦 Funcionalidades
 
@@ -33,7 +33,7 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 | ⏳     | Testes unitários com JUnit e Mockito |
 | ⏳     | Deploy em ambiente cloud gratuito (Railway, Render, etc) |
 
----
+
 
 ## 🗃️ Modelo de dados atual
 
@@ -41,7 +41,7 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 - **Cliente**: nome, e-mail, CPF, endereço *(embutido)*
     - **Endereço** (embutido): rua, número, complemento, bairro, cidade, UF, CEP
 
----
+
 
 ## ⚙️ Como executar o projeto
 
@@ -85,7 +85,7 @@ spring.jpa.hibernate.ddl-auto=update
 ./mvnw spring-boot:run
 ```
 
----
+
 
 ## 🔍 Acesse a documentação da API
 
@@ -95,7 +95,7 @@ A documentação gerada automaticamente está disponível em:
 http://localhost:8080/swagger-ui.html
 ```
 
----
+
 
 ## 🧪 Endpoints disponíveis (até o momento)
 ### 🔹 Produtos
@@ -122,7 +122,7 @@ http://localhost:8080/swagger-ui.html
 | `PUT`    | `/clientes/{id}` | Atualiza os dados do cliente |
 | `DELETE` | `/clientes/{id}` | Remove um cliente            |
 
----
+
 
 ## 💡 Objetivo do projeto
 
@@ -133,7 +133,7 @@ Este projeto é parte de um portfólio prático com foco em:
 - Tratamento de exceções e validações
 - Expansibilidade para incluir pedidos, segurança, e deploy
 
----
+
 
 ## 📫 Contato
 
