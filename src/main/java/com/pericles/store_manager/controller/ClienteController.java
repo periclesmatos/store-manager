@@ -22,7 +22,6 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ClienteResponse> cadastrarCliente(@RequestBody @Valid ClienteRequest clienteRequest, UriComponentsBuilder uriComponentsBuilder) {
         var cliente = clienteService.cadastrarCliente(clienteRequest);
         var uri = uriComponentsBuilder.path("/cliente/{id}").buildAndExpand(cliente.getId()).toUri();
@@ -48,14 +47,12 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteUpdateDTO clienteUpdate) {
         var cliente = clienteService.atualizarCliente(id, clienteUpdate);
         return ResponseEntity.ok(new ClienteResponse(cliente));
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<ClienteResponse> deletarCliente(@PathVariable Long id) {
         clienteService.deletarCliente(id);
         return ResponseEntity.noContent().build();

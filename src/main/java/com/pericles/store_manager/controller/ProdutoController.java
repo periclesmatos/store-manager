@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,7 +19,6 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody @Valid ProdutoRequest produtoRequest, UriComponentsBuilder uriComponentsBuilder) {
         var produto = produtoService.registrarProduto(produtoRequest);
         var uri = uriComponentsBuilder.path("/produto/{id}").buildAndExpand(produto.getId()).toUri();
@@ -41,33 +39,29 @@ public class ProdutoController {
 
     @GetMapping("/busca")
     public ResponseEntity<Page<ProdutoResponse>> buscarProdutosPorNome(@RequestParam(required = false) String nome, Pageable pageable) {
-        var page = produtoService.FiltrarProdutosPorNome(nome, pageable);
+        var page = produtoService.filtrarProdutosPorNome(nome, pageable);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoUpdateDTO produtoUpdate) {
         var produto = produtoService.atualizarProduto(id, produtoUpdate);
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
     @PatchMapping("/{id}/preco")
-    @Transactional
     public ResponseEntity<ProdutoResponse> modificarPreco(@PathVariable Long id, @RequestBody @Valid AtualizarPrecoDTO atualizarPreco) {
         var produto = produtoService.modificarPreco(id, atualizarPreco);
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
     @PatchMapping("/{id}/estoque")
-    @Transactional
     public ResponseEntity<ProdutoResponse> modificarEstoque(@PathVariable Long id, @RequestBody @Valid AtualizarEstoqueDTO atualizarEstoque) {
         var produto = produtoService.modificarEstoque(id, atualizarEstoque);
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<ProdutoResponse> deletarProduto(@PathVariable Long id) {
         produtoService.deletarProduto(id);
         return ResponseEntity.noContent().build();
