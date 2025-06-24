@@ -25,11 +25,11 @@ public class ProdutoService {
         return produtoRepository.findAllByAtivoTrue(pageable).map(ProdutoResponse::new);
     }
 
-    public Produto buscarProduto(Long id) {
+    public Produto buscarProdutoPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
 
-    public Page<ProdutoResponse> buscarProdutosPorNome(String nome, Pageable pageable) {
+    public Page<ProdutoResponse> FiltrarProdutosPorNome(String nome, Pageable pageable) {
         if (nome != null && !nome.isBlank()) {
             return produtoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome, pageable).map(ProdutoResponse::new);
         }

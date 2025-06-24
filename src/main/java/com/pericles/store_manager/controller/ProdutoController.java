@@ -19,7 +19,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @PostMapping()
+    @PostMapping
     @Transactional
     public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody @Valid ProdutoRequest produtoRequest, UriComponentsBuilder uriComponentsBuilder) {
         var produto = produtoService.registrarProduto(produtoRequest);
@@ -27,7 +27,7 @@ public class ProdutoController {
         return ResponseEntity.created(uri).body(new ProdutoResponse(produto));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<ProdutoResponse>> listarProdutosAtivos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         var page = produtoService.listarProdutosAtivos(pageable);
         return ResponseEntity.ok(page);
@@ -35,13 +35,13 @@ public class ProdutoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponse> buscarProduto(@PathVariable Long id) {
-        var produto = produtoService.buscarProduto(id);
+        var produto = produtoService.buscarProdutoPorId(id);
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
     @GetMapping("/busca")
     public ResponseEntity<Page<ProdutoResponse>> buscarProdutosPorNome(@RequestParam(required = false) String nome, Pageable pageable) {
-        var page = produtoService.buscarProdutosPorNome(nome, pageable);
+        var page = produtoService.FiltrarProdutosPorNome(nome, pageable);
         return ResponseEntity.ok(page);
     }
 
