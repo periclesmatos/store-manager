@@ -32,8 +32,8 @@ public class ClienteService {
     }
 
     @Transactional(readOnly = true)
-    public Cliente buscarClientePorId(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+    public Cliente buscarClienteAtivoPorId(Long id) {
+        return clienteRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new EntityNotFoundException("Cliente inativo ou não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -43,14 +43,14 @@ public class ClienteService {
 
     @Transactional
     public Cliente atualizarCliente(Long id, @Valid ClienteUpdateDTO clienteUpdate) {
-        var cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+        var cliente = buscarClienteAtivoPorId(id);
         cliente.atualizarCliente(clienteUpdate);
         return cliente;
     }
 
     @Transactional
     public void deletarCliente(Long id) {
-        var cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+        var cliente = buscarClienteAtivoPorId(id);
         cliente.deletarCliente();
     }
 

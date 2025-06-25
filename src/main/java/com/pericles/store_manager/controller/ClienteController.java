@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,7 +35,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> buscarClientePorId(@PathVariable Long id) {
-        var cliente = clienteService.buscarClientePorId(id);
+        var cliente = clienteService.buscarClienteAtivoPorId(id);
         return ResponseEntity.ok(new ClienteResponse(cliente));
     }
 

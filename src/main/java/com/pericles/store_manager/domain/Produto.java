@@ -65,6 +65,20 @@ public class Produto {
         this.estoque = novoEstoque;
     }
 
+    public void debitarEstoque(int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade inválida para debito.");
+        }
+        this.estoque -= quantidade;
+    }
+
+    public void reabastecerEstoque(int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade inválida para reabastecimento.");
+        }
+        this.estoque += quantidade;
+    }
+
     public void deletarProduto() {
         this.ativo = false;
     }

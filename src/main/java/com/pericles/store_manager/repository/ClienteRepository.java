@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import java.util.Optional;
 
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
@@ -20,4 +20,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
                 OR c.cpf LIKE CONCAT('%', :termo, '%')
             """)
     Page<Cliente> buscarClientesPorTermo(@Param("termo") String termo, Pageable pageable);
+
+    Optional<Cliente> findByIdAndAtivoTrue(Long id);
 }

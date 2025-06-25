@@ -29,8 +29,8 @@ public class ProdutoService {
     }
 
     @Transactional(readOnly = true)
-    public Produto buscarProdutoPorId(Long id) {
-        return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+    public Produto buscarProdutoAtivoPorId(Long id) {
+        return produtoRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new EntityNotFoundException("Produto inativo ou não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -43,28 +43,45 @@ public class ProdutoService {
 
     @Transactional
     public Produto atualizarProduto(Long id, ProdutoUpdateDTO produtoUpdate) {
-        var produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+        var produto = buscarProdutoAtivoPorId(id);
         produto.atualizarProduto(produtoUpdate);
         return produto;
     }
 
     @Transactional
     public Produto modificarPreco(Long id, AtualizarPrecoDTO atualizarPreco) {
-        var produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+        var produto = buscarProdutoAtivoPorId(id);
         produto.modificarPreco(atualizarPreco.preco());
         return produto;
     }
 
     @Transactional
     public Produto modificarEstoque(Long id, AtualizarEstoqueDTO atualizarEstoque) {
-        var produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+        var produto = buscarProdutoAtivoPorId(id);
         produto.modificarEstoque(atualizarEstoque.estoque());
         return produto;
     }
 
     @Transactional
+    public void debitarEstoque(Long produtoId, int quantidade) {
+        Produto produto = buscarProdutoAtivoPorId(produtoId);
+
+        if (produto.getEstoque() < quantidade) {
+            throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNome());
+        }
+
+        produto.debitarEstoque(quantidade);
+    }
+
+    @Transactional
+    public void reabastecerEstoque(Long produtoId, int quantidade) {
+        Produto produto = buscarProdutoAtivoPorId(produtoId);
+        produto.reabastecerEstoque(quantidade);
+    }
+
+    @Transactional
     public void deletarProduto(Long id) {
-        var produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+        var produto = buscarProdutoAtivoPorId(id);
         produto.deletarProduto();
     }
 

@@ -33,7 +33,7 @@ public class ProdutoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponse> buscarProduto(@PathVariable Long id) {
-        var produto = produtoService.buscarProdutoPorId(id);
+        var produto = produtoService.buscarProdutoAtivoPorId(id);
         return ResponseEntity.ok(new ProdutoResponse(produto));
     }
 
