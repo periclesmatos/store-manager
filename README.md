@@ -16,32 +16,46 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 - Maven
 - Lombok
 
+## ✅ Funcionalidades implementadas
 
+### 📦 Produtos
+- Cadastro, atualização e exclusão lógica de produtos
+- Filtro por nome (com paginação)
+- Validação de estoque e preço
 
-## 📦 Funcionalidades
+### 👤 Clientes
+- Registro, atualização e exclusão lógica de clientes
+- Listagem com filtro por nome, e-mail ou CPF
 
-| Status | Funcionalidade |
-|--------|----------------|
-| ✅     | CRUD de Produtos |
-| ✅     | CRUD de Clientes |
-| 🔄     | Registro de Pedidos com múltiplos itens *(em desenvolvimento)* |
-| 🔄     | Cálculo automático do valor total do pedido |
-| 🔄     | Redução de estoque ao efetuar pedido |
-| 🔄     | Controle de status do pedido (PENDENTE, PAGO, ENVIADO, CANCELADO) |
-| ⏳     | Autenticação com Spring Security e JWT |
-| ⏳     | Filtros por status, cliente, data |
-| ⏳     | Testes unitários com JUnit e Mockito |
-| ⏳     | Deploy em ambiente cloud gratuito (Railway, Render, etc) |
+### 🧾 Pedidos
+- Criação de pedidos com múltiplos itens
+- Cálculo automático do valor total
+- Validação de estoque no momento do pedido
+- Relacionamento com cliente e produtos
+- Paginação e filtros por status, cliente e data
+- Ações no pedido:
+  - Confirmação de pagamento
+  - Confirmação de envio
+  - Confirmação de entrega
+  - Cancelamento (com reposição automática de estoque)
 
+## 🔄 Status do pedido
 
+| Status              | Ação permitida                           |
+|---------------------|------------------------------------------|
+| `AGUARDANDO_PAGAMENTO` | Confirmar pagamento ou cancelar          |
+| `PROCESSANDO`        | Confirmar envio ou cancelar              |
+| `ENVIADO`            | Confirmar entrega ou cancelar            |
+| `CONCLUIDO`          | Finalizado, nenhuma ação permitida       |
+| `CANCELADO`          | Pedido cancelado, nenhuma ação permitida |
 
-## 🗃️ Modelo de dados atual
+## 🔜 Próximas implementações
 
-- **Produto**: nome, descrição, preço, estoque
-- **Cliente**: nome, e-mail, CPF, endereço *(embutido)*
-    - **Endereço** (embutido): rua, número, complemento, bairro, cidade, UF, CEP
-
-
+- Exceptions mais específicas
+- Autenticação e autorização
+- Documentação com Swagger/OpenAPI
+- Testes unitários e de integração
+- calculo de desconto e formas de pagamento
 
 ## ⚙️ Como executar o projeto
 
@@ -98,42 +112,41 @@ http://localhost:8080/swagger-ui.html
 
 
 ## 🧪 Endpoints disponíveis (até o momento)
-### 🔹 Produtos
+### Produtos
+- `POST /produtos` - Cadastrar 
+- `GET /produtos` - Listar 
+- `GET /produtos?nome=...` - Filtrar por nome
+- `PUT /produtos/{id}` - Atualizar
+- `PATCH /produtos/{id}/preco` - Modificar preço
+- `PATCH /produtos/{id}/estoque` - Modificar estoque
+- `DELETE /produtos/{id}` - Excluir (lógica)
 
-| Método   | Endpoint                  | Descrição                    |
-|----------|---------------------------|------------------------------|
-| `POST`   | `/produtos`               | Cadastra um novo produto     |
-| `GET`    | `/produtos`               | Lista todos os produtos      |
-| `GET`    | `/produtos/{id}`          | Busca produto por ID         |
-| `GET`    | `/produtos/busca?nome=x`  | Filtra produtos por nome     |
-| `PUT`    | `/produtos/{id}`          | Atualiza os dados do produto |
-| `PATCH`  | `/produtos/{id}/preco`    | Modifica somente o preço     |
-| `PATCH`  | `/produtos/{id}/estoque`  | Modifica somente o estoque   |
-| `DELETE` | `/produtos/{id}`          | Remove um produto            |
+### Clientes
+- `POST /clientes` - Cadastrar 
+- `GET /clientes` - Listar
+- `GET /clientes?termo=...` - Filtrar por termo (Nome, email ou CPF)
+- `DELETE /clientes/{id}` Excluir (lógica)
 
-### 🔹 Clientes
+### Pedidos
+- `POST /pedidos` - Registrar pedido
+- `GET /pedidos` - Listar (com filtros e paginação)
+- `PUT /pedidos/{id}/itens` - Atualizar itens
+- `POST /pedidos/{id}/confirmar-pagamento` - Confirmar pagamento
+- `POST /pedidos/{id}/confirmar-envio` - Confirmar envio
+- `POST /pedidos/{id}/confirmar-entrega` - Confirmar entrega
+- `POST /pedidos/{id}/cancelar` - Cancelar pedido
 
-| Método   | Endpoint         | Descrição                    |
-|----------|------------------|------------------------------|
-| `POST`   | `/clientes`      | Cadastra um novo cliente     |
-| `GET`    | `/clientes`      | Lista todos os clientes      |
-| `GET`    | `/clientes/{id}` | Busca cliente por ID         |
-| `GET`    | `/clientes/busca?termo=x`| Filtra clientes por termo no nome, e-mail ou CPF |
-| `PUT`    | `/clientes/{id}` | Atualiza os dados do cliente |
-| `DELETE` | `/clientes/{id}` | Remove um cliente            |
+## 🧠 Aprendizados
 
+Este projeto tem como objetivo consolidar conhecimentos essenciais em:
 
-
-## 💡 Objetivo do projeto
-
-Este projeto é parte de um portfólio prático com foco em:
-
-- Modelagem de domínio próxima do mercado
-- Boas práticas de arquitetura em camadas
-- Tratamento de exceções e validações
-- Expansibilidade para incluir pedidos, segurança, e deploy
-
-
+- Arquitetura limpa com Spring Boot
+- Boas práticas RESTful
+- Validação robusta com Bean Validation
+- Tratamento de exceções centralizado (`@ControllerAdvice`)
+- Uso de Specification para filtros dinâmicos
+- Controle de transações com `@Transactional` no Service
+- Organização de regras de negócio e separação de camadas
 
 ## 📫 Contato
 
