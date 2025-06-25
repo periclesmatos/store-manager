@@ -23,17 +23,14 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @JoinColumn(name = "cliente_id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Cliente cliente;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status_pedido", nullable = false)
     private StatusPedido statusPedido;
 
-    @NotNull
     @PositiveOrZero
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;

@@ -24,25 +24,20 @@ public class ItemPedido {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
-    @NotNull
     private Pedido pedido;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", nullable = false)
-    @NotNull
     private Produto produto;
 
-    @NotNull
     @Positive
     @Column(nullable = false)
     private Integer quantidade;
 
-    @NotNull
     @PositiveOrZero
     @Column(name = "preco_unitario", nullable = false)
     private BigDecimal precoUnitario;
 
-    @NotNull
     @PositiveOrZero
     @Column(name = "preco_total", nullable = false)
     private BigDecimal precoTotal;

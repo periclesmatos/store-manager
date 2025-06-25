@@ -20,14 +20,13 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false)
     private String nome;
 
-    @Email
-    @NotBlank
+    @Column(nullable = false)
     private String email;
 
-    @NotBlank
+    @Column(nullable = false)
     private String cpf;
     private boolean ativo;
 

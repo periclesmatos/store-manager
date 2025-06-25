@@ -24,17 +24,14 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false)
     private String nome;
     private String descricao;
 
-    @NotNull
-    @Positive
     @Column(precision = 19, scale = 4)
     private BigDecimal preco;
 
-    @NotNull
-    @PositiveOrZero
+    @Column(nullable = false)
     private Integer estoque;
     private boolean ativo;
 
