@@ -2,6 +2,8 @@ package com.pericles.store_manager.service;
 
 import com.pericles.store_manager.domain.Produto;
 import com.pericles.store_manager.dto.produto.*;
+import com.pericles.store_manager.exception.EstoqueInsuficienteException;
+import com.pericles.store_manager.exception.RecursoNaoEncontradoException;
 import com.pericles.store_manager.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class ProdutoService {
 
     @Transactional(readOnly = true)
     public Produto buscarProdutoAtivoPorId(Long id) {
-        return produtoRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new EntityNotFoundException("Produto inativo ou não encontrado."));
+        return produtoRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new RecursoNaoEncontradoException("Produto com ID " + id + "  inativo ou não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +69,7 @@ public class ProdutoService {
         Produto produto = buscarProdutoAtivoPorId(produtoId);
 
         if (produto.getEstoque() < quantidade) {
-            throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNome());
+            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto: " + produto.getNome());
         }
 
         produto.debitarEstoque(quantidade);

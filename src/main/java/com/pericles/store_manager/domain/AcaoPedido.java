@@ -1,5 +1,6 @@
 package com.pericles.store_manager.domain;
 
+import com.pericles.store_manager.exception.NegocioException;
 import com.pericles.store_manager.strategy.AcaoDePedido;
 
 public enum AcaoPedido implements AcaoDePedido {
@@ -8,7 +9,7 @@ public enum AcaoPedido implements AcaoDePedido {
         @Override
         public void executar(Pedido pedido) {
             if (pedido.getStatusPedido() != StatusPedido.AGUARDANDO_PAGAMENTO) {
-                throw new IllegalArgumentException("Pagamento já confirmado.");
+                throw new NegocioException("Ação não permitida para o estado atual do pedido.");
             }
             pedido.modificarStatusPedido(StatusPedido.PROCESSANDO);
         }
@@ -18,7 +19,7 @@ public enum AcaoPedido implements AcaoDePedido {
         @Override
         public void executar(Pedido pedido) {
             if (pedido.getStatusPedido() != StatusPedido.PROCESSANDO) {
-                throw new IllegalStateException("Pedido ainda não está em processamento.");
+                throw new NegocioException("Ação não permitida para o estado atual do pedido.");
             }
             pedido.modificarStatusPedido(StatusPedido.ENVIADO);
         }
@@ -28,7 +29,7 @@ public enum AcaoPedido implements AcaoDePedido {
         @Override
         public void executar(Pedido pedido) {
             if (pedido.getStatusPedido() != StatusPedido.ENVIADO) {
-                throw new IllegalStateException("Pedido ainda não foi enviado.");
+                throw new NegocioException("Ação não permitida para o estado atual do pedido.");
             }
             pedido.modificarStatusPedido(StatusPedido.CONCLUIDO);
         }
@@ -38,7 +39,7 @@ public enum AcaoPedido implements AcaoDePedido {
         @Override
         public void executar(Pedido pedido) {
             if (pedido.getStatusPedido() != StatusPedido.PROCESSANDO) {
-                throw new IllegalStateException("Pedido não está disponível para retirada.");
+                throw new NegocioException("Ação não permitida para o estado atual do pedido.");
             }
             pedido.modificarStatusPedido(StatusPedido.CONCLUIDO);
         }
@@ -48,7 +49,7 @@ public enum AcaoPedido implements AcaoDePedido {
         @Override
         public void executar(Pedido pedido) {
             if (pedido.getStatusPedido() == StatusPedido.CONCLUIDO) {
-                throw new IllegalStateException("Pedido já concluído não pode ser cancelado.");
+                throw new NegocioException("Ação não permitida para o estado atual do pedido.");
             }
             pedido.modificarStatusPedido(StatusPedido.CANCELADO);
 

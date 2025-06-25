@@ -4,6 +4,7 @@ import com.pericles.store_manager.domain.*;
 import com.pericles.store_manager.dto.pedido.ItemPedidoRequest;
 import com.pericles.store_manager.dto.pedido.PedidoRequest;
 import com.pericles.store_manager.dto.pedido.PedidoResponse;
+import com.pericles.store_manager.exception.RecursoNaoEncontradoException;
 import com.pericles.store_manager.repository.PedidoRepository;
 import com.pericles.store_manager.specification.PedidoSpecifications;
 import jakarta.persistence.EntityNotFoundException;
@@ -73,7 +74,7 @@ public class PedidoService {
 
     @Transactional(readOnly = true)
     public Pedido buscarPedidoPorId(Long id) {
-        return pedidoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado."));
+        return pedidoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Pedido com ID " + id + " não encontrado."));
     }
 
     @Transactional

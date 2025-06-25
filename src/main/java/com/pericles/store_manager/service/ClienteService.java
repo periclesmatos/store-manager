@@ -4,6 +4,7 @@ import com.pericles.store_manager.domain.Cliente;
 import com.pericles.store_manager.dto.cliente.ClienteRequest;
 import com.pericles.store_manager.dto.cliente.ClienteResponse;
 import com.pericles.store_manager.dto.cliente.ClienteUpdateDTO;
+import com.pericles.store_manager.exception.RecursoNaoEncontradoException;
 import com.pericles.store_manager.repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public Cliente buscarClienteAtivoPorId(Long id) {
-        return clienteRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new EntityNotFoundException("Cliente inativo ou não encontrado."));
+        return clienteRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new RecursoNaoEncontradoException("Cliente com ID " + id + " inativo ou não encontrado."));
     }
 
     @Transactional(readOnly = true)

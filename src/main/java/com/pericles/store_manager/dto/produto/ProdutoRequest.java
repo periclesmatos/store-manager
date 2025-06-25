@@ -8,7 +8,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public record ProdutoRequest(
-        @NotBlank
+        @NotBlank(message = "Nome do produto é obrigatório.")
         String nome,
         String descricao,
         @Positive @NotNull(message = "O preço deve ser maior que zero.")

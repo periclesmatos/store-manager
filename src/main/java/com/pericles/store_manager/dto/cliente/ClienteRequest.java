@@ -4,12 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record ClienteRequest(
-        @NotBlank
+        @NotBlank(message = "Nome5 do cliente é obrigatório")
         String nome,
-        @NotBlank
-        @Email
+        @NotBlank(message = "Email é obrigatório")
+        @Email(message = "Email inválido")
         String email,
-        @NotBlank
+        @NotBlank(message = "CPF é obrigatório")
         String cpf,
         EnderecoRequest endereco
 ) {
