@@ -67,11 +67,6 @@ public class ProdutoService {
     @Transactional
     public void debitarEstoque(Long produtoId, int quantidade) {
         Produto produto = buscarProdutoAtivoPorId(produtoId);
-
-        if (produto.getEstoque() < quantidade) {
-            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto: " + produto.getNome());
-        }
-
         produto.debitarEstoque(quantidade);
     }
 

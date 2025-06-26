@@ -37,8 +37,8 @@ public class PedidoService {
 
         for (ItemPedidoRequest itemPedidoRequest : pedidoRequest.itens()) {
             Produto produto = produtoService.buscarProdutoAtivoPorId(itemPedidoRequest.produtoId());
-            produtoService.debitarEstoque(produto.getId(), itemPedidoRequest.quantidade());
             ItemPedido item = new ItemPedido(pedido, produto, itemPedidoRequest.quantidade());
+            produtoService.debitarEstoque(produto.getId(), itemPedidoRequest.quantidade());
             pedido.adicionarItem(item);
         }
 

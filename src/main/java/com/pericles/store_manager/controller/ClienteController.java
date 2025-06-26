@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
@@ -29,8 +29,8 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<Page<ClienteResponse>> listarClientes(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
-        var page = clienteService.listarClientesAtivos(pageable);
-        return ResponseEntity.ok(page);
+        var clientes = clienteService.listarClientesAtivos(pageable);
+        return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/{id}")

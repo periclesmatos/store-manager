@@ -6,6 +6,7 @@ import com.pericles.store_manager.domain.StatusPedido;
 import com.pericles.store_manager.dto.pedido.ItemPedidoRequest;
 import com.pericles.store_manager.dto.pedido.PedidoRequest;
 import com.pericles.store_manager.dto.pedido.PedidoResponse;
+import com.pericles.store_manager.exception.NegocioException;
 import com.pericles.store_manager.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/pedidos")
 public class PedidoController {
 
     @Autowired
@@ -60,37 +61,16 @@ public class PedidoController {
         return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
     }
 
-    @PostMapping("/{pedidoId}/confirmar-pagamento")
-    public ResponseEntity<PedidoResponse> confirmarPagamento(@PathVariable Long pedidoId) {
-        pedidoService.processarAcao(pedidoId, AcaoPedido.CONFIRMAR_PAGAMENTO);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
-    }
+    @PostMapping("/{pedidoId}/acao/{acao}")
+    public ResponseEntity<PedidoResponse> processarAcao(@PathVariable Long pedidoId, @PathVariable String acao) {
+        AcaoPedido acaoPedido;
+        try {
+            acaoPedido = AcaoPedido.valueOf(acao.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new NegocioException("Ação inválida para o pedido: " + acao);
+        }
 
-    @PostMapping("/{pedidoId}/confirmar-envio")
-    public ResponseEntity<PedidoResponse> confirmarEnvio(@PathVariable Long pedidoId) {
-        pedidoService.processarAcao(pedidoId, AcaoPedido.CONFIRMAR_ENVIO);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
-    }
-
-    @PostMapping("/{pedidoId}/confirmar-entrega")
-    public ResponseEntity<PedidoResponse> confirmarEntrega(@PathVariable Long pedidoId) {
-        pedidoService.processarAcao(pedidoId, AcaoPedido.CONFIRMAR_ENTREGA);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
-    }
-
-    @PostMapping("/{pedidoId}/confirmar-retirada")
-    public ResponseEntity<PedidoResponse> confirmarRetirada(@PathVariable Long pedidoId) {
-        pedidoService.processarAcao(pedidoId, AcaoPedido.CONFIRMAR_RETIRADA);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
-    }
-
-    @PostMapping("/{pedidoId}/cancelar")
-    public ResponseEntity<PedidoResponse> cancelar(@PathVariable Long pedidoId) {
-        pedidoService.processarAcao(pedidoId, AcaoPedido.CANCELAR);
+        pedidoService.processarAcao(pedidoId, acaoPedido);
         Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
         return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
     }

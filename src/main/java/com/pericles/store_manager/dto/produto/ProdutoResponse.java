@@ -9,7 +9,7 @@ public record ProdutoResponse(
         String nome,
         String descricao,
         BigDecimal preco,
-        Integer estqoue
+        Integer estoque
 ) {
     public ProdutoResponse(Produto produto) {
         this(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getPreco(), produto.getEstoque());

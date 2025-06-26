@@ -2,6 +2,8 @@ package com.pericles.store_manager.domain;
 
 import com.pericles.store_manager.dto.produto.ProdutoRequest;
 import com.pericles.store_manager.dto.produto.ProdutoUpdateDTO;
+import com.pericles.store_manager.exception.EstoqueInsuficienteException;
+import com.pericles.store_manager.exception.NegocioException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,28 +52,31 @@ public class Produto {
 
     public void modificarPreco(BigDecimal novoPreco) {
         if (novoPreco == null || novoPreco.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Preço inválido");
+            throw new NegocioException("Preço inválido");
         }
         this.preco = novoPreco;
     }
 
     public void modificarEstoque(Integer novoEstoque) {
         if (novoEstoque == null || novoEstoque < 0) {
-            throw new IllegalArgumentException("Estoque não pode ser negativo");
+            throw new NegocioException("A quantidade no estoque não pode ser negativa.");
         }
         this.estoque = novoEstoque;
     }
 
     public void debitarEstoque(int quantidade) {
         if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade inválida para debito.");
+            throw new NegocioException("Quantidade para debito não pode ser negativa.");
+        }
+        if (getEstoque() < quantidade) {
+            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto: " + getNome());
         }
         this.estoque -= quantidade;
     }
 
     public void reabastecerEstoque(int quantidade) {
         if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade inválida para reabastecimento.");
+            throw new NegocioException("Quantidade para reabastecer estoque não pode ser negativa.");
         }
         this.estoque += quantidade;
     }

@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/produtos")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
+
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
 
     @PostMapping
     public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody @Valid ProdutoRequest produtoRequest, UriComponentsBuilder uriComponentsBuilder) {
@@ -27,8 +30,8 @@ public class ProdutoController {
 
     @GetMapping
     public ResponseEntity<Page<ProdutoResponse>> listarProdutosAtivos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
-        var page = produtoService.listarProdutosAtivos(pageable);
-        return ResponseEntity.ok(page);
+        var produtos = produtoService.listarProdutosAtivos(pageable);
+        return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
