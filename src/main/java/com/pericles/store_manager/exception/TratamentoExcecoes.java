@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class TratamentoExcecoes {
 
+    @ExceptionHandler(UsuarioJaExisteException.class)
+    public ResponseEntity<String> handleUsuarioJaExiste(UsuarioJaExisteException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroValidacaoResposta> tratarValidacoes(MethodArgumentNotValidException ex) {
         List<ErroCampo> campos = ex.getBindingResult().getFieldErrors()
