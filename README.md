@@ -9,14 +9,24 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 - Java 17
 - Spring Boot 3
 - Spring Data JPA
+- Spring Security com JWT
 - Bean Validation
 - PostgreSQL
-- H2
+- H2 (ambiente de testes)
 - OpenAPI (Swagger)
 - Maven
 - Lombok
 
 ## ✅ Funcionalidades implementadas
+
+### 🔐 Autenticação (JWT)
+- Registro de novos usuários: `POST /auth/register`
+- Login com geração de token: `POST /auth/login`
+- Senhas criptografadas com `BCrypt`
+- Proteção de endpoints com validação de token JWT
+- Validação de expiração automática do token
+- Filtro personalizado interceptando requisições autenticadas
+- Tokens com validade de 2 horas
 
 ### 📦 Produtos
 - Cadastro, atualização e exclusão lógica de produtos
@@ -28,16 +38,17 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 - Listagem com filtro por nome, e-mail ou CPF
 
 ### 🧾 Pedidos
-- Criação de pedidos com múltiplos itens
+- Criação com múltiplos itens
 - Cálculo automático do valor total
-- Validação de estoque no momento do pedido
+- Validação de estoque
 - Relacionamento com cliente e produtos
-- Paginação e filtros por status, cliente e data
 - Ações no pedido:
   - Confirmação de pagamento
-  - Confirmação de envio
-  - Confirmação de entrega
+  - Envio
+  - Entrega
   - Cancelamento (com reposição automática de estoque)
+- Filtros por status, cliente e data
+- Paginação completa
 
 ## 🔄 Status do pedido
 
@@ -51,11 +62,11 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 
 ## 🔜 Próximas implementações
 
-- Exceptions mais específicas
-- Autenticação e autorização
-- Documentação com Swagger/OpenAPI
+- Melhor documentação Swagger
+- Exceptions personalizadas por cenário
 - Testes unitários e de integração
-- calculo de desconto e formas de pagamento
+- Suporte a descontos e formas de pagamento
+- Refresh Token para sessões persistentes
 
 ## ⚙️ Como executar o projeto
 
@@ -79,7 +90,7 @@ No arquivo `application.properties`:
 #### PostgreSQL
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/order_api
+spring.datasource.url=jdbc:postgresql://localhost:5432/store_manager_db
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 spring.jpa.hibernate.ddl-auto=update
@@ -112,6 +123,16 @@ http://localhost:8080/swagger-ui.html
 
 
 ## 🧪 Endpoints disponíveis (até o momento)
+
+###🔐 Autenticação
+- `POST /auth/register` — Registrar novo usuário
+- `POST /auth/login` — Efetuar login (retorna token JWT)
+
+```
+Use o token JWT retornado no login no cabeçalho das requisições protegidas:
+Authorization: Bearer <token>
+```
+
 ### Produtos
 - `POST /produtos` - Cadastrar 
 - `GET /produtos` - Listar 
@@ -142,11 +163,12 @@ Este projeto tem como objetivo consolidar conhecimentos essenciais em:
 
 - Arquitetura limpa com Spring Boot
 - Boas práticas RESTful
+- Autenticação JWT e segurança de endpoints
+- Criptografia de senha com BCrypt
 - Validação robusta com Bean Validation
 - Tratamento de exceções centralizado (`@ControllerAdvice`)
-- Uso de Specification para filtros dinâmicos
-- Controle de transações com `@Transactional` no Service
-- Organização de regras de negócio e separação de camadas
+- Filtros dinâmicos com Specification
+- Separação clara entre controller, service e repository
 
 ## 📫 Contato
 
