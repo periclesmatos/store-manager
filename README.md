@@ -133,7 +133,7 @@ Use o token JWT retornado no login no cabeçalho das requisições protegidas:
 Authorization: Bearer <token>
 ```
 
-### Produtos
+### 📦 Produtos
 - `POST /produtos` - Cadastrar 
 - `GET /produtos` - Listar 
 - `GET /produtos?nome=...` - Filtrar por nome
@@ -142,13 +142,13 @@ Authorization: Bearer <token>
 - `PATCH /produtos/{id}/estoque` - Modificar estoque
 - `DELETE /produtos/{id}` - Excluir (lógica)
 
-### Clientes
+### 👤 Clientes
 - `POST /clientes` - Cadastrar 
 - `GET /clientes` - Listar
 - `GET /clientes?termo=...` - Filtrar por termo (Nome, email ou CPF)
 - `DELETE /clientes/{id}` Excluir (lógica)
 
-### Pedidos
+### 🧾 Pedidos
 - `POST /pedidos` - Registrar pedido
 - `GET /pedidos` - Listar (com filtros e paginação)
 - `PUT /pedidos/{id}/itens` - Atualizar itens
