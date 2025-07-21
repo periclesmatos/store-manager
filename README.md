@@ -19,6 +19,7 @@ API RESTful desenvolvida com Java e Spring Boot para gerenciamento de produtos, 
 
 ## ✅ Funcionalidades implementadas
 
+
 ### 🔐 Autenticação (JWT)
 - Registro de novos usuários: `POST /auth/register`
 - Login com geração de token: `POST /auth/login`
