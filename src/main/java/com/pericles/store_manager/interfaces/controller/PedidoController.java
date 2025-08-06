@@ -1,7 +1,6 @@
 package com.pericles.store_manager.interfaces.controller;
 
 import com.pericles.store_manager.domain.model.AcaoPedido;
-import com.pericles.store_manager.domain.model.Pedido;
 import com.pericles.store_manager.domain.model.StatusPedido;
 import com.pericles.store_manager.interfaces.dto.pedido.ItemPedidoRequest;
 import com.pericles.store_manager.interfaces.dto.pedido.PedidoRequest;
@@ -19,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,10 +30,13 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoResponse> registrarPedido(@RequestBody @Valid PedidoRequest pedidoRequest, UriComponentsBuilder uriComponentsBuilder) {
-        var pedido = pedidoService.registrarPedido(pedidoRequest);
-        var uri = uriComponentsBuilder.path("/pedido/{id}").buildAndExpand(pedido.getId()).toUri();
-        return ResponseEntity.created(uri).body(new PedidoResponse(pedido));
+    public ResponseEntity<PedidoResponse> registrarPedido(@RequestBody @Valid PedidoRequest request, UriComponentsBuilder uriBuilder) {
+        PedidoResponse response = pedidoService.cadastrar(request);
+        URI uri = uriBuilder
+                .path("/pedido/{id}")
+                .buildAndExpand(response.id())
+                .toUri();
+        return ResponseEntity.created(uri).body(response);
     }
 
     @GetMapping
@@ -44,21 +47,21 @@ public class PedidoController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim,
             @PageableDefault(size = 10, sort = "dataPedido") Pageable pageable
     ) {
-        var pedidos = pedidoService.listarPedidosComFiltro(statusPedido, clienteId, dataInicio, dataFim, pageable);
+        var pedidos = pedidoService.listarComFiltro(statusPedido, clienteId, dataInicio, dataFim, pageable);
         return ResponseEntity.ok(pedidos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PedidoResponse> buscarPedido(@PathVariable Long id) {
-        var pedido = pedidoService.buscarPedidoPorId(id);
-        return ResponseEntity.ok(new PedidoResponse(pedido));
+        PedidoResponse response = pedidoService.buscarPorId(id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{pedidoId}/itens")
     public ResponseEntity<PedidoResponse> atualizarItens(@PathVariable Long pedidoId, @RequestBody @NotEmpty @Valid List<ItemPedidoRequest> itensRequest) {
         pedidoService.atualizarItens(pedidoId, itensRequest);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
+        PedidoResponse response = pedidoService.buscarPorId(pedidoId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{pedidoId}/acao/{acao}")
@@ -71,8 +74,8 @@ public class PedidoController {
         }
 
         pedidoService.processarAcao(pedidoId, acaoPedido);
-        Pedido pedidoAtualizado = pedidoService.buscarPedidoPorId(pedidoId);
-        return ResponseEntity.ok(new PedidoResponse(pedidoAtualizado));
+        PedidoResponse response = pedidoService.buscarPorId(pedidoId);
+        return ResponseEntity.ok(response);
     }
 
 }

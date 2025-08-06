@@ -57,7 +57,9 @@ public class Pedido {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void adicionarItem(ItemPedido item) {
+    public void adicionarItem(Produto produto, int quantidade) {
+        produto.debitarEstoque(quantidade);
+        ItemPedido item =  new ItemPedido(this, produto, quantidade);
         itens.add(item);
     }
 

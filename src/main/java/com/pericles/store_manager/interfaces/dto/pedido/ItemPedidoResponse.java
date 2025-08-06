@@ -11,7 +11,4 @@ public record ItemPedidoResponse(
         BigDecimal precoUnitario,
         BigDecimal precoTotal
 ) {
-    public ItemPedidoResponse(ItemPedido itemPedido) {
-        this(itemPedido.getId(), itemPedido.getProduto().getNome(), itemPedido.getQuantidade(), itemPedido.getPrecoUnitario(), itemPedido.getPrecoTotal());
-    }
 }

@@ -6,8 +6,8 @@ import com.pericles.store_manager.interfaces.dto.pedido.PedidoRequest;
 import com.pericles.store_manager.interfaces.dto.pedido.PedidoResponse;
 import com.pericles.store_manager.infrastructure.exception.RecursoNaoEncontradoException;
 import com.pericles.store_manager.domain.repository.PedidoRepository;
+import com.pericles.store_manager.interfaces.mapper.PedidoMapper;
 import com.pericles.store_manager.interfaces.specification.PedidoSpecifications;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,34 +20,40 @@ import java.util.List;
 @Service
 public class PedidoService {
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+    private final PedidoRepository pedidoRepository;
+    private final ClienteService clienteService;
+    private final ProdutoService produtoService;
 
-    @Autowired
-    private ClienteService clienteService;
+    public PedidoService(PedidoRepository pedidoRepository, ClienteService clienteService, ProdutoService produtoService) {
+        this.pedidoRepository = pedidoRepository;
+        this.clienteService = clienteService;
+        this.produtoService = produtoService;
+    }
 
-    @Autowired
-    private ProdutoService produtoService;
+    @Transactional(readOnly = true)
+    public Pedido buscarEntidadePorId(Long id) {
+        return pedidoRepository
+                .findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pedido com ID " + id + " não encontrado."));
+    }
 
     @Transactional
-    public Pedido registrarPedido(PedidoRequest pedidoRequest) {
-        Cliente cliente = clienteService.buscarClienteAtivoPorId(pedidoRequest.clienteId());
+    public PedidoResponse cadastrar(PedidoRequest request) {
+        Cliente cliente = clienteService.buscarEntidadePorId(request.clienteId());
         Pedido pedido = new Pedido(cliente);
 
-        for (ItemPedidoRequest itemPedidoRequest : pedidoRequest.itens()) {
-            Produto produto = produtoService.buscarProdutoAtivoPorId(itemPedidoRequest.produtoId());
-            ItemPedido item = new ItemPedido(pedido, produto, itemPedidoRequest.quantidade());
-            produtoService.debitarEstoque(produto.getId(), itemPedidoRequest.quantidade());
-            pedido.adicionarItem(item);
+        for (ItemPedidoRequest item : request.itens()) {
+            Produto produto = produtoService.buscarEntidadePorId(item.produtoId());
+            pedido.adicionarItem(produto, item.quantidade());
         }
 
         pedido.calcularTotal();
         pedidoRepository.save(pedido);
-        return pedido;
+        return PedidoMapper.toResponse(pedido);
     }
 
     @Transactional(readOnly = true)
-    public Page<PedidoResponse> listarPedidosComFiltro(
+    public Page<PedidoResponse> listarComFiltro(
             StatusPedido statusPedido,
             Long clienteId,
             LocalDateTime dataInicio,
@@ -68,17 +74,18 @@ public class PedidoService {
             spec = spec.and(PedidoSpecifications.comDataPedidoEntre(dataInicio, dataFim));
         }
 
-        return pedidoRepository.findAll(spec, pageable).map(PedidoResponse::new);
+        return pedidoRepository.findAll(spec, pageable).map(PedidoMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
-    public Pedido buscarPedidoPorId(Long id) {
-        return pedidoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Pedido com ID " + id + " não encontrado."));
+    public PedidoResponse buscarPorId(Long id) {
+        Pedido pedido = buscarEntidadePorId(id);
+        return PedidoMapper.toResponse(pedido);
     }
 
     @Transactional
-    public void atualizarItens(Long pedidoId, List<ItemPedidoRequest> itensRequest) {
-        Pedido pedido = buscarPedidoPorId(pedidoId);
+    public void atualizarItens(Long pedidoId, List<ItemPedidoRequest> requests) {
+        Pedido pedido = buscarEntidadePorId(pedidoId);
 
         for (ItemPedido item : pedido.getItens()) {
             produtoService.reabastecerEstoque(item.getProduto().getId(), item.getQuantidade());
@@ -86,11 +93,9 @@ public class PedidoService {
 
         pedido.getItens().clear();
 
-        for (ItemPedidoRequest itemRequest : itensRequest) {
-            Produto produto = produtoService.buscarProdutoAtivoPorId(itemRequest.produtoId());
-            produtoService.debitarEstoque(produto.getId(), itemRequest.quantidade());
-            ItemPedido item = new ItemPedido(pedido, produto, itemRequest.quantidade());
-            pedido.adicionarItem(item);
+        for (ItemPedidoRequest item : requests) {
+            Produto produto = produtoService.buscarEntidadePorId(item.produtoId());
+            pedido.adicionarItem(produto, item.quantidade());
         }
 
         pedido.calcularTotal();
@@ -98,7 +103,7 @@ public class PedidoService {
 
     @Transactional
     public void processarAcao(Long pedidoId, AcaoPedido acaoPedido) {
-        Pedido pedido = buscarPedidoPorId(pedidoId);
+        Pedido pedido = buscarEntidadePorId(pedidoId);
         acaoPedido.executar(pedido);
     }
 

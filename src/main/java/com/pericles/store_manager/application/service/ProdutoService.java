@@ -88,7 +88,7 @@ public class ProdutoService {
 
     @Transactional
     public void deletar(Long id) {
-        var produto = buscarEntidadePorId(id);
+        Produto produto = buscarEntidadePorId(id);
         produto.desativar();
     }
 

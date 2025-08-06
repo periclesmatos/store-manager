@@ -19,16 +19,4 @@ public record PedidoResponse(
 
         List<ItemPedidoResponse> itens
 ) {
-    public PedidoResponse(Pedido pedido) {
-        this(
-            pedido.getId(),
-            pedido.getCliente().getNome(),
-            pedido.getStatusPedido(),
-            pedido.getValorTotal(),
-            pedido.getDataPedido(),
-            pedido.getItens().stream()
-                    .map(ItemPedidoResponse::new)
-                    .toList()
-        );
-    }
 }
