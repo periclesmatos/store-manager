@@ -1,6 +1,6 @@
 package com.pericles.store_manager.infrastructure.security;
 
-import com.pericles.store_manager.domain.repository.UsuarioRepository;
+import com.pericles.store_manager.domain.usuario.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

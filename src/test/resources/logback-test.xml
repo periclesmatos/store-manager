@@ -1,0 +1,17 @@
+<configuration>
+    <!-- Mostra só erros no console -->
+    <root level="ERROR" />
+
+    <!-- Silencia logs do Hibernate SQL, bind, batch -->
+    <logger name="org.hibernate.SQL" level="OFF" />
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="OFF" />
+    <logger name="org.hibernate.orm.jdbc.bind" level="OFF" />
+    <logger name="org.hibernate.engine.jdbc.batch" level="OFF" />
+
+    <!-- Silencia logs de criação e alteração de schema -->
+    <logger name="org.hibernate.tool.schema.internal" level="OFF" />
+    <logger name="org.hibernate.tool.hbm2ddl" level="OFF" />
+
+    <!-- Silencia Spring JDBC -->
+    <logger name="org.springframework.jdbc.core" level="OFF" />
+</configuration>
