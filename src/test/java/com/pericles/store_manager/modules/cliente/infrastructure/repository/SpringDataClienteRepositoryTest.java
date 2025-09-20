@@ -103,8 +103,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void findAllByAtivoTrue_quandoExistirClientesAtivos_deveRetornarSomenteClientesAtivos() {
-        Cliente ativo = criarClienteNoBanco("Ativo1", "ativo1@email.com", "11111111111", true);
-        Cliente inativo = criarClienteNoBanco("Inativo1", "inativo1@email.com", "22222222222", false);
+        criarClienteNoBanco("Ativo1", "ativo1@email.com", "11111111111", true);
+        criarClienteNoBanco("Inativo1", "inativo1@email.com", "22222222222", false);
 
         Page<Cliente> resposta = springDataClienteRepository.findAllByAtivoTrue(PageRequest.of(0, 10));
 
@@ -114,8 +114,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void findAllByAtivoTrue_quandoNaoExistirClientesAtivos_deveRetornarListaVazia() {
-        Cliente inativo1 = criarClienteNoBanco("Inativo1", "inativo1@email.com", "11111111111", false);
-        Cliente inativo2 = criarClienteNoBanco("Inativo2", "inativo2@email.com", "22222222222", false);
+        criarClienteNoBanco("Inativo1", "inativo1@email.com", "11111111111", false);
+        criarClienteNoBanco("Inativo2", "inativo2@email.com", "22222222222", false);
 
         Page<Cliente> resposta = springDataClienteRepository.findAllByAtivoTrue(PageRequest.of(0, 10));
 
@@ -131,8 +131,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void buscarClientesPorTermo_quandoNomeContemTermo_deveRetornarClientesCorrespondentes() {
-        Cliente cliente1 = criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
-        Cliente cliente2 = criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
+        criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
+        criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
 
         Page<Cliente> resposta = springDataClienteRepository.buscarClientesPorTermo("Silva", PageRequest.of(0, 10));
 
@@ -141,8 +141,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void buscarClientesPorTermo_quandoEmailContemTermo_deveRetornarClientesCorrespondentes() {
-        Cliente cliente1 = criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
-        Cliente cliente2 = criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
+        criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
+        criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
 
         Page<Cliente> resposta = springDataClienteRepository.buscarClientesPorTermo("maria@", PageRequest.of(0, 10));
 
@@ -151,8 +151,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void buscarClientesPorTermo_quandoCpfContemTermo_deveRetornarClientesCorrespondentes() {
-        Cliente cliente1 = criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
-        Cliente cliente2 = criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
+        criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
+        criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
 
         Page<Cliente> resposta = springDataClienteRepository.buscarClientesPorTermo("12345678900", PageRequest.of(0, 10));
 
@@ -161,8 +161,8 @@ class SpringDataClienteRepositoryTest {
 
     @Test
     void buscarClientesPorTermo_quandoNenhumClienteContemTermo_deveRetornarListaVazia() {
-        Cliente cliente1 = criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
-        Cliente cliente2 = criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
+        criarClienteNoBanco("Maria Silva", "maria@email.com", "12345678900", true);
+        criarClienteNoBanco("João Souza", "joao@email.com", "98765432100", true);
 
         Page<Cliente> resposta = springDataClienteRepository.buscarClientesPorTermo("Pericles", PageRequest.of(0, 10));
 
